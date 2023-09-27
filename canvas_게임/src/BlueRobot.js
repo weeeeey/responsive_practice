@@ -1,6 +1,8 @@
 export default function BlueRobot() {
     this.sprites = new Image();
     this.sprites.src = 'blue-robot.png'; // this sprite sheet has 8 cells
+    this.sprites.style.width = '10px';
+    this.sprites.style.height = '10px';
     this.targetMode = 'idle';
     this.walk = function () {
         this.targetMode = 'walk';
