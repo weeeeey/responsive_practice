@@ -1,37 +1,27 @@
 let canvas: HTMLCanvasElement = document.querySelector('#canvas')!;
 let ctx = canvas.getContext('2d')!;
-let raf;
+let isDraw: boolean = false;
+// isDraw를 명시하지 않으면 mousemove 에서 영역 내로 들어가면 바로 그림을 그려버림
 
-let ball = {
-    x: 100,
-    y: 100,
-    vx: 5,
-    vy: 2,
-    radius: 25,
-    color: 'blue',
-    draw: function () {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, true);
-        ctx.closePath();
-        ctx.fillStyle = this.color;
-        ctx.fill();
-    },
+const startDraw = (e: MouseEvent) => {
+    ctx.beginPath();
+    ctx.moveTo(e.offsetX, e.offsetY);
+    ctx.fillStyle = 'black';
+    isDraw = true;
 };
 
-function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ball.draw();
-    ball.x += ball.vx;
-    ball.y += ball.vy;
-    raf = window.requestAnimationFrame(draw);
-}
+const drawing = (e: MouseEvent) => {
+    if (isDraw) {
+        ctx.lineTo(e.offsetX, e.offsetY);
+        ctx.stroke();
+    }
+};
 
-canvas.addEventListener('mouseover', function (e) {
-    raf = window.requestAnimationFrame(draw);
-});
+const endDrawing = (e: MouseEvent) => {
+    ctx.closePath();
+    isDraw = false;
+};
 
-canvas.addEventListener('mouseout', function (e) {
-    window.cancelAnimationFrame(raf);
-});
-
-ball.draw();
+canvas.addEventListener('mousedown', startDraw);
+canvas.addEventListener('mousemove', drawing);
+canvas.addEventListener('mouseup', endDrawing);
