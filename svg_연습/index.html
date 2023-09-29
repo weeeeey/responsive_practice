@@ -1,34 +1,26 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
     <head>
         <meta charset="UTF-8" />
-        <title>원형 Progress Bar</title>
-        <link rel="stylesheet" href="style.css" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <style>
+            .bubble::after {
+                content: '';
+                border-top-left-radius: 50% 100%;
+                border-top-right-radius: 50% 100%;
+                position: absolute;
+                bottom: 0;
+                z-index: -1;
+                width: 100%;
+                background-color: #0f0f10;
+                height: 85%;
+            }
+        </style>
     </head>
     <body>
-        <div class="box">
-            <span class="text01">30%</span>
-            <svg>
-                <circle cx="100" cy="100" r="90" />
-            </svg>
-        </div>
-        <div class="box">
-            <span class="text02">50%</span>
-            <svg>
-                <circle cx="100" cy="100" r="90" />
-            </svg>
-        </div>
-        <div class="box">
-            <span class="text03">75%</span>
-            <svg>
-                <circle cx="100" cy="100" r="90" />
-            </svg>
-        </div>
-        <div class="box">
-            <span class="text04">100%</span>
-            <svg>
-                <circle cx="100" cy="100" r="90" />
-            </svg>
-        </div>
+        <section class="bubble">
+            <!-- content here -->
+        </section>
     </body>
 </html>

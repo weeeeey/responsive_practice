@@ -9,6 +9,7 @@ body {
     height: 4000px;
     font-family: 'Pacifico', cursive;
     font-size: 2rem;
+    color: rgba(255, 0, 0, 0.5);
 }
 
 .title {
