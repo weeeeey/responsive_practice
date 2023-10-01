@@ -9,16 +9,11 @@ const sizes = {
     height: window.innerHeight,
 };
 
-const cursor = {
-    x: 0,
-    y: 0,
-};
-
 const scene = new THREE.Scene();
 
 const mesh = new THREE.Mesh(
     new THREE.BoxGeometry(1, 1, 1, 5, 5, 5),
-    new THREE.MeshBasicMaterial({ color: 0xff0000 })
+    new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: true })
 );
 scene.add(mesh);
 
@@ -45,11 +40,7 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setSize(sizes.width, sizes.height);
 
 // Animate
-const clock = new THREE.Clock();
-
 const tick = () => {
-    const elapsedTime = clock.getElapsedTime();
-
     // Update controls
     controls.update();
 
@@ -61,11 +52,6 @@ const tick = () => {
 };
 
 tick();
-
-window.addEventListener('mousemove', (event) => {
-    cursor.x = event.clientX / sizes.width - 0.5;
-    cursor.y = -(event.clientY / sizes.height - 0.5);
-});
 
 window.addEventListener('resize', () => {
     sizes.width = window.innerWidth;
