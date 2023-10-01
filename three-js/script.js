@@ -80,3 +80,25 @@ window.addEventListener('resize', () => {
 
     renderer.setPixelRatio(Math.min(2, window.devicePixelRatio));
 });
+
+// A way to know if it's already in fullscreen
+// A method to go to the fullscreen mode
+// A method to leave the fullscreen mode
+window.addEventListener('dblclick', () => {
+    const fullscreenElement =
+        document.fullscreenElement || document.webkitFullscreenElement;
+
+    if (!fullscreenElement) {
+        if (canvas.requestFullscreen) {
+            canvas.requestFullscreen();
+        } else if (canvas.webkitRequestFullscreen) {
+            canvas.webkitRequestFullscreen();
+        }
+    } else {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+        }
+    }
+});
