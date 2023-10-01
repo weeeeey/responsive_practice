@@ -11,10 +11,34 @@ const sizes = {
 
 const scene = new THREE.Scene();
 
-const mesh = new THREE.Mesh(
-    new THREE.BoxGeometry(1, 1, 1, 5, 5, 5),
-    new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: true })
-);
+// **** Creating myself geometry
+
+// To add vertices to a BufferGeometry you must start with a Float32Array.
+const geometry = new THREE.BufferGeometry();
+
+// Create a Float32Array containing the vertices position (3 by 3)
+const positionsArray = new Float32Array([
+    0,
+    0,
+    0, // First vertex
+    0,
+    1,
+    0, // Second vertex
+    1,
+    0,
+    0, // Third vertex
+]);
+
+// Create the attribute and name it 'position'
+const positionsAttribute = new THREE.BufferAttribute(positionsArray, 3);
+geometry.setAttribute('position', positionsAttribute);
+
+const material = new THREE.MeshBasicMaterial({
+    color: 0xff0000,
+    wireframe: true,
+});
+
+const mesh = new THREE.Mesh(geometry, material);
 scene.add(mesh);
 
 // Camera
