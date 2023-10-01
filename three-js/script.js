@@ -90,6 +90,16 @@ const cube3 = new THREE.Mesh(
 cube3.position.x = 1.5;
 group.add(cube3);
 
-camera.position.set(0, -0.5, 5);
+group.children.forEach((child, idx) => {
+    child.position.set(idx, 0, 0);
+});
 
-renderer.render(scene, camera);
+camera.position.set(0, 0, 5);
+
+const tick = () => {
+    group.children[0].rotation.x += 0.1;
+    window.requestAnimationFrame(tick);
+    renderer.render(scene, camera);
+};
+
+tick();
