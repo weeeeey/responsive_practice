@@ -1,5 +1,8 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import gsap from 'gsap';
+
+import * as dat from 'lil-gui'; //debug UI
 
 const canvas = document.querySelector('canvas.webgl');
 
@@ -11,31 +14,11 @@ const sizes = {
 
 const scene = new THREE.Scene();
 
-// **** Creating myself geometry
-
-// To add vertices to a BufferGeometry you must start with a Float32Array.
-const geometry = new THREE.BufferGeometry();
-
-// Create a Float32Array containing the vertices position (3 by 3)
-const positionsArray = new Float32Array([
-    0,
-    0,
-    0, // First vertex
-    0,
-    1,
-    0, // Second vertex
-    1,
-    0,
-    0, // Third vertex
-]);
-
+const geometry = new THREE.BoxGeometry(1, 1, 1);
 // Create the attribute and name it 'position'
-const positionsAttribute = new THREE.BufferAttribute(positionsArray, 3);
-geometry.setAttribute('position', positionsAttribute);
 
 const material = new THREE.MeshBasicMaterial({
     color: 0xff0000,
-    wireframe: true,
 });
 
 const mesh = new THREE.Mesh(geometry, material);
@@ -94,7 +77,7 @@ window.addEventListener('resize', () => {
 // A way to know if it's already in fullscreen
 // A method to go to the fullscreen mode
 // A method to leave the fullscreen mode
-window.addEventListener('dblclick', () => {
+canvas.addEventListener('dblclick', () => {
     const fullscreenElement =
         document.fullscreenElement || document.webkitFullscreenElement;
 
@@ -112,3 +95,30 @@ window.addEventListener('dblclick', () => {
         }
     }
 });
+
+// Add debug
+const gui = new dat.GUI();
+// gui.add(mesh.position, 'y', -3, 3, 0.01);
+gui.add(mesh.position, 'y').min(-3).max(3).step(0.01).name('height');
+gui.add(mesh, 'visible');
+gui.add(material, 'wireframe');
+
+// gui colors
+// spin
+const parameters = {
+    color: material.color.getHexString(),
+    spin: () => {
+        gsap.to(mesh.rotation, {
+            duration: 1,
+            y: mesh.rotation.y + Math.PI * 2,
+        });
+    },
+};
+// 첫 선언을 이렇게 해도 괜찮 const material = new THREE.MeshBasicMaterial({color:parameters.color})
+
+gui.addColor(parameters, 'color').onChange((value) => {
+    // material.setValues({ color: value });
+    material.color.set(parameters.color);
+});
+
+gui.add(parameters, 'spin');
