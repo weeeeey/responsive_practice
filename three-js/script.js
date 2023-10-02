@@ -30,10 +30,11 @@ const normalTexture = textureLoader.load('./images/door/normal.jpg');
 const ambientOcclusionTexture = textureLoader.load(
     './images/door/ambientOcclusion.jpg'
 );
+
 const metalnessTexture = textureLoader.load('./images/door/metalness.jpg');
 const roughnessTexture = textureLoader.load('./images/door/roughness.jpg');
 
-const material = new THREE.MeshBasicMaterial({ map: alphaTexture });
+const material = new THREE.MeshBasicMaterial({ map: colorTexture });
 
 const canvas = document.querySelector('canvas.webgl');
 
@@ -44,9 +45,9 @@ const sizes = {
 };
 
 const scene = new THREE.Scene();
-scene.background = colorTexture;
+scene.background = ambientOcclusionTexture;
 
-const geometry = new THREE.BoxGeometry(1, 1, 1);
+const geometry = new THREE.TorusGeometry(1, 0.35, 32, 100);
 // Create the attribute and name it 'position'
 
 const mesh = new THREE.Mesh(geometry, material);
@@ -60,14 +61,14 @@ const camera = new THREE.PerspectiveCamera(
     100
 );
 
-camera.position.set(0, 1, 3);
+camera.position.set(0, 0, 5);
 mesh.rotation.y = Math.PI * 0.7;
 // camera.lookAt(mesh.position);
 scene.add(camera);
 
 // // Controls
-// const controls = new OrbitControls(camera, canvas);
-// controls.enableDamping = true;
+const controls = new OrbitControls(camera, canvas);
+controls.enableDamping = true;
 
 // Renderer
 const renderer = new THREE.WebGLRenderer({
@@ -78,7 +79,7 @@ renderer.setSize(sizes.width, sizes.height);
 // Animate
 const tick = () => {
     // Update controls
-    // controls.update();
+    controls.update();
 
     // Render
     renderer.render(scene, camera);
