@@ -4,10 +4,36 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 // Start of the code
 THREE.ColorManagement.enabled = false;
 
-const textureLoader = new THREE.TextureLoader();
-const texture = textureLoader.load('./images/door/color.jpg');
+const loadingManager = new THREE.LoadingManager();
+// loadingManager.onStart = () =>
+// {
+//     console.log('loading started')
+// }
+// loadingManager.onLoad = () =>
+// {
+//     console.log('loading finished')
+// }
+// loadingManager.onProgress = () =>
+// {
+//     console.log('loading progressing')
+// }
+// loadingManager.onError = () =>
+// {
+//     console.log('loading error')
+// }
+const textureLoader = new THREE.TextureLoader(loadingManager);
 
-const material = new THREE.MeshBasicMaterial({ map: texture });
+const colorTexture = textureLoader.load('./images/door/color.jpg');
+const alphaTexture = textureLoader.load('./images/door/alpha.jpg');
+const heightTexture = textureLoader.load('./images/door/height.jpg');
+const normalTexture = textureLoader.load('./images/door/normal.jpg');
+const ambientOcclusionTexture = textureLoader.load(
+    './images/door/ambientOcclusion.jpg'
+);
+const metalnessTexture = textureLoader.load('./images/door/metalness.jpg');
+const roughnessTexture = textureLoader.load('./images/door/roughness.jpg');
+
+const material = new THREE.MeshBasicMaterial({ map: alphaTexture });
 
 const canvas = document.querySelector('canvas.webgl');
 
@@ -18,6 +44,7 @@ const sizes = {
 };
 
 const scene = new THREE.Scene();
+scene.background = colorTexture;
 
 const geometry = new THREE.BoxGeometry(1, 1, 1);
 // Create the attribute and name it 'position'
