@@ -1,57 +1,44 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-// Start of the code
-THREE.ColorManagement.enabled = false;
-
-const loadingManager = new THREE.LoadingManager();
-// loadingManager.onStart = () =>
-// {
-//     console.log('loading started')
-// }
-// loadingManager.onLoad = () =>
-// {
-//     console.log('loading finished')
-// }
-// loadingManager.onProgress = () =>
-// {
-//     console.log('loading progressing')
-// }
-// loadingManager.onError = () =>
-// {
-//     console.log('loading error')
-// }
-const textureLoader = new THREE.TextureLoader(loadingManager);
-
-const colorTexture = textureLoader.load('./images/door/color.jpg');
-const alphaTexture = textureLoader.load('./images/door/alpha.jpg');
-const heightTexture = textureLoader.load('./images/door/height.jpg');
-const normalTexture = textureLoader.load('./images/door/normal.jpg');
-const ambientOcclusionTexture = textureLoader.load(
-    './images/door/ambientOcclusion.jpg'
-);
-
-const metalnessTexture = textureLoader.load('./images/door/metalness.jpg');
-const roughnessTexture = textureLoader.load('./images/door/roughness.jpg');
-
-const material = new THREE.MeshBasicMaterial({ map: colorTexture });
-
 const canvas = document.querySelector('canvas.webgl');
-
-// Sizes
 const sizes = {
     width: window.innerWidth,
     height: window.innerHeight,
 };
 
+const loadingManager = new THREE.LoadingManager();
+const textureLoader = new THREE.TextureLoader(loadingManager);
+
+const doorColorTexture = textureLoader.load('public/images/door/color.jpg');
+const doorAlphaTexture = textureLoader.load('public/images/door/alpha.jpg');
+const doorAmbientOcclusionTexture = textureLoader.load(
+    'public/images/door/ambientOcclusion.jpg'
+);
+const doorHeightTexture = textureLoader.load('public/images/door/height.jpg');
+const doorNormalTexture = textureLoader.load('public/images/door/normal.jpg');
+const doorMetalnessTexture = textureLoader.load(
+    'public/images/door/metalness.jpg'
+);
+const doorRoughnessTexture = textureLoader.load(
+    'public/images/door/roughness.jpg'
+);
+
 const scene = new THREE.Scene();
-scene.background = ambientOcclusionTexture;
 
-const geometry = new THREE.TorusGeometry(1, 0.35, 32, 100);
-// Create the attribute and name it 'position'
+const material = new THREE.MeshBasicMaterial({
+    map: doorAmbientOcclusionTexture,
+});
 
-const mesh = new THREE.Mesh(geometry, material);
-scene.add(mesh);
+const sphere = new THREE.Mesh(new THREE.SphereGeometry(0.5, 16, 16), material);
+const plane = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), material);
+const torus = new THREE.Mesh(
+    new THREE.TorusGeometry(0.3, 0.2, 16, 32),
+    material
+);
+sphere.position.x = -1.5;
+torus.position.x = 1.5;
+scene.add(sphere, plane, torus);
 
 // Camera
 const camera = new THREE.PerspectiveCamera(
@@ -60,25 +47,29 @@ const camera = new THREE.PerspectiveCamera(
     0.1,
     100
 );
+camera.position.set(0, 2, 10);
 
-camera.position.set(0, 0, 5);
-mesh.rotation.y = Math.PI * 0.7;
-// camera.lookAt(mesh.position);
 scene.add(camera);
 
-// // Controls
-const controls = new OrbitControls(camera, canvas);
-controls.enableDamping = true;
-
-// Renderer
 const renderer = new THREE.WebGLRenderer({
     canvas: canvas,
 });
 renderer.setSize(sizes.width, sizes.height);
 
-// Animate
+const controls = new OrbitControls(camera, canvas);
+controls.enableDamping = true;
+
+const clock = new THREE.Clock();
 const tick = () => {
-    // Update controls
+    const elapsedTime = clock.getElapsedTime();
+    sphere.rotation.y = 0.1 * elapsedTime;
+    plane.rotation.y = 0.1 * elapsedTime;
+    torus.rotation.y = 0.1 * elapsedTime;
+
+    sphere.rotation.x = 0.15 * elapsedTime;
+    plane.rotation.x = 0.15 * elapsedTime;
+    torus.rotation.x = 0.15 * elapsedTime;
+
     controls.update();
 
     // Render
