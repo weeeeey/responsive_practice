@@ -24,13 +24,14 @@ fontLoader.load('./fonts/helvetiker_regular.typeface.json', (font) => {
         // bevel: 각도자, 비스듬한 면, thickness: 두께
     });
 
+    textGeometry.center();
     // bound box 를 이용해서 텍스트의 중간으로 중심 잡는 법.
-    textGeometry.computeBoundingBox(); //computeBoundingBox를 실행해야 boundingBox의 값 생성 됨.
-    textGeometry.translate(
-        -textGeometry.boundingBox.max.x * 0.5,
-        -textGeometry.boundingBox.max.y * 0.5,
-        -textGeometry.boundingBox.max.z * 0.5
-    );
+    // textGeometry.computeBoundingBox(); //computeBoundingBox를 실행해야 boundingBox의 값 생성 됨.
+    // textGeometry.translate(
+    //     -textGeometry.boundingBox.max.x * 0.5,
+    //     -textGeometry.boundingBox.max.y * 0.5,
+    //     -textGeometry.boundingBox.max.z * 0.5
+    // );
 
     // textGeometry.translate(
     //     - (textGeometry.boundingBox.max.x - 0.02) * 0.5, // Subtract bevel size
