@@ -35,6 +35,27 @@ fontLoader.load('./fonts/helvetiker_regular.typeface.json', (font) => {
 
     const textMatrial = new THREE.MeshMatcapMaterial({ matcap: matcapTexture });
 
+    // 객체 무작위로 넣어보기
+    const donutGeometry = new THREE.TorusGeometry(0.3, 0.2, 20, 45);
+    const donutMaterial = new THREE.MeshMatcapMaterial({
+        matcap: matcapTexture,
+        opacity: 0.5,
+        transparent: true,
+    });
+    for (let i = 0; i < 100; i++) {
+        const donut = new THREE.Mesh(donutGeometry, donutMaterial);
+        donut.position.x = (Math.random() - 0.5) * 10;
+        donut.position.y = (Math.random() - 0.5) * 10;
+        donut.position.z = (Math.random() - 0.5) * 10;
+
+        donut.rotation.x = Math.random() * Math.PI;
+        donut.rotation.y = Math.random() * Math.PI;
+
+        const scale = Math.random();
+        donut.scale.set(scale, scale, scale);
+        scene.add(donut);
+    }
+
     const text = new THREE.Mesh(textGeometry, textMatrial);
     scene.add(text);
     const camera = new THREE.PerspectiveCamera(
