@@ -9,7 +9,10 @@ const sizes = {
     height: window.innerHeight,
 };
 const scene = new THREE.Scene();
+
+const textureLoader = new THREE.TextureLoader();
 const fontLoader = new FontLoader();
+
 fontLoader.load('./fonts/helvetiker_regular.typeface.json', (font) => {
     const textGeometry = new TextGeometry('Hello Three.js', {
         font: font,
@@ -25,21 +28,13 @@ fontLoader.load('./fonts/helvetiker_regular.typeface.json', (font) => {
     });
 
     textGeometry.center();
-    // bound box 를 이용해서 텍스트의 중간으로 중심 잡는 법.
-    // textGeometry.computeBoundingBox(); //computeBoundingBox를 실행해야 boundingBox의 값 생성 됨.
-    // textGeometry.translate(
-    //     -textGeometry.boundingBox.max.x * 0.5,
-    //     -textGeometry.boundingBox.max.y * 0.5,
-    //     -textGeometry.boundingBox.max.z * 0.5
-    // );
 
-    // textGeometry.translate(
-    //     - (textGeometry.boundingBox.max.x - 0.02) * 0.5, // Subtract bevel size
-    //     - (textGeometry.boundingBox.max.y - 0.02) * 0.5, // Subtract bevel size
-    //     - (textGeometry.boundingBox.max.z - 0.03) * 0.5  // Subtract bevel thickness
-    // )
+    // Matcap = Material Capture 이미지로 조명을 대신하는 방식 - 가짜 라이팅 방식
 
-    const textMatrial = new THREE.MeshBasicMaterial();
+    const matcapTexture = textureLoader.load('./static/textures/matcaps/1.png');
+
+    const textMatrial = new THREE.MeshMatcapMaterial({ matcap: matcapTexture });
+
     const text = new THREE.Mesh(textGeometry, textMatrial);
     scene.add(text);
     const camera = new THREE.PerspectiveCamera(
